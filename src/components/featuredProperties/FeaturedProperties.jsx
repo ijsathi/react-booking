@@ -1,49 +1,26 @@
 import React from 'react';
+import useFetch from '../../hooks/useFetch';
 import './featuredProperties.css';
 
 const FeaturedProperties = () => {
+    const { data, loading, error } = useFetch("/hotels?featured=true");
     return (
         <div className='fp'>
-            <div className="fpItem">
-                <img src="https://www.visitgreenwich.org.uk/imageresizer/?image=%2Fdbimgs%2FGRN%20-%20Main%20Gallery%20-%20Accommodation%20-%20Hotels.png&action=MediaGallery" alt="" className="fpImg" />
-                <span className="fpName">Dhaka five star hotel</span>
-                <span className="fpCity">Dhaka</span>
-                <span className="fpPrice">Starting from 120$</span>
-                <div className="fpRating">
-                    <button>8.9</button>
-                    <span>Excellent</span>
-                </div>
-            </div>
-            <div className="fpItem">
-                <img src="https://www.visitgreenwich.org.uk/imageresizer/?image=%2Fdbimgs%2FGRN%20-%20Main%20Gallery%20-%20Accommodation%20-%20Hotels.png&action=MediaGallery" alt="" className="fpImg" />
-                <span className="fpName">Dhaka five star hotel</span>
-                <span className="fpCity">Dhaka</span>
-                <span className="fpPrice">Starting from 120$</span>
-                <div className="fpRating">
-                    <button>8.9</button>
-                    <span>Excellent</span>
-                </div>
-            </div>
-            <div className="fpItem">
-                <img src="https://www.visitgreenwich.org.uk/imageresizer/?image=%2Fdbimgs%2FGRN%20-%20Main%20Gallery%20-%20Accommodation%20-%20Hotels.png&action=MediaGallery" alt="" className="fpImg" />
-                <span className="fpName">Dhaka five star hotel</span>
-                <span className="fpCity">Dhaka</span>
-                <span className="fpPrice">Starting from 120$</span>
-                <div className="fpRating">
-                    <button>8.9</button>
-                    <span>Excellent</span>
-                </div>
-            </div>
-            <div className="fpItem">
-                <img src="https://www.visitgreenwich.org.uk/imageresizer/?image=%2Fdbimgs%2FGRN%20-%20Main%20Gallery%20-%20Accommodation%20-%20Hotels.png&action=MediaGallery" alt="" className="fpImg" />
-                <span className="fpName">Dhaka five star hotel</span>
-                <span className="fpCity">Dhaka</span>
-                <span className="fpPrice">Starting from 120$</span>
-                <div className="fpRating">
-                    <button>8.9</button>
-                    <span>Excellent</span>
-                </div>
-            </div>
+            {loading ? "loading..." : <>
+                {
+                    data.slice(0,4).map((item) => (
+                        <div className="fpItem" key={item._id}>
+                            <img src={item.photos[0]} alt={item.name} className="fpImg" />
+                            <span className="fpName">{item.name}</span>
+                            <span className="fpCity">{item.city}</span>
+                            <span className="fpPrice">Starting from ${item.cheapestPrice}</span>
+                            {item.rating && <div className="fpRating">
+                                <button>{item.rating}</button>
+                                <span>Excellent</span>
+                            </div>}
+                        </div>
+                    ))}
+            </>}
         </div>
     );
 };
